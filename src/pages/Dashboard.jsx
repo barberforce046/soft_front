@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../context/useAuth';
 import api from '../services/api';
 import { FaCut, FaSignOutAlt, FaPlus } from 'react-icons/fa';
 
@@ -15,6 +15,18 @@ const Dashboard = () => {
     useEffect(() => {
         fetchCuts();
     }, []);
+
+    const fetchCuts = async () => {
+        try {
+            setLoading(true);
+            const { data } = await api.get('/cuts');
+            setCuts(data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
